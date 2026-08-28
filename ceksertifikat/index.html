@@ -126,41 +126,68 @@
         </section>
 
 
+       <!-- FORM PENCARIAN NOMOR SERTIFIKAT -->
+<div class="certificate-search">
+
+    <div class="input-group">
+
+        <input
+            type="text"
+            id="searchCertificate"
+            class="form-control"
+            placeholder="Masukkan Nomor Sertifikat"
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            class="btn btn-success"
+            onclick="cariSertifikat()">
+
+            <i class="bi bi-search"></i>
+            Cari
+
+        </button>
+
+    </div>
+
+</div>
+
+
         <!-- ================================================= -->
         <!-- LOADING -->
         <!-- ================================================= -->
 
         <section id="loadingBox"
-                 class="result-section">
+         class="result-section d-none">
 
-            <div class="container">
+    <div class="container">
 
-                <div class="loading-card">
+        <div class="loading-card">
 
-                    <div class="spinner-border"
-                         role="status">
+            <div class="spinner-border"
+                 role="status">
 
-                        <span class="visually-hidden">
-                            Memuat...
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Memverifikasi Sertifikat
-                    </h3>
-
-                    <p>
-                        Mohon tunggu, sistem sedang memeriksa
-                        data sertifikat.
-                    </p>
-
-                </div>
+                <span class="visually-hidden">
+                    Memuat...
+                </span>
 
             </div>
 
-        </section>
+            <h3>
+                Memverifikasi Sertifikat
+            </h3>
 
+            <p>
+                Mohon tunggu, sistem sedang memeriksa
+                data sertifikat.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
         <!-- ================================================= -->
         <!-- SERTIFIKAT VALID -->
