@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Verifikasi keaslian sertifikat secara online">
+
+    <title>Verifikasi Sertifikat</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="site-header">
+
+        <div class="container">
+
+            <div class="header-content">
+
+                <div class="brand">
+
+                    <div class="brand-icon">
+                        <i class="bi bi-patch-check-fill"></i>
+                    </div>
+
+                    <div>
+                        <div class="brand-title">
+                            PTTUN MEDAN
+                        </div>
+
+                        <div class="brand-subtitle">
+                            Sistem Verifikasi Sertifikat
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="header-security">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <span>
+                        Verifikasi Resmi
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- MAIN -->
+    <!-- ================================================= -->
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero-section">
+
+            <div class="container">
+
+                <div class="hero-content">
+
+                    <div class="verification-badge">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        <span>
+                            VERIFIKASI SERTIFIKAT
+                        </span>
+
+                    </div>
+
+
+                    <h1>
+                        Keaslian Sertifikat
+                    </h1>
+
+
+                    <p>
+                        Sistem ini digunakan untuk memverifikasi
+                        keaslian dan validitas sertifikat secara
+                        elektronik.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- LOADING -->
+        <!-- ================================================= -->
+
+        <section id="loadingBox"
+                 class="result-section">
+
+            <div class="container">
+
+                <div class="loading-card">
+
+                    <div class="spinner-border"
+                         role="status">
+
+                        <span class="visually-hidden">
+                            Memuat...
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Memverifikasi Sertifikat
+                    </h3>
+
+                    <p>
+                        Mohon tunggu, sistem sedang memeriksa
+                        data sertifikat.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- SERTIFIKAT VALID -->
+        <!-- ================================================= -->
+
+        <section id="verifiedResult"
+                 class="result-section d-none">
+
+            <div class="container">
+
+                <div class="certificate-card">
+
+                    <!-- STATUS HEADER -->
+
+                    <div class="verified-header">
+
+                        <div class="verified-title">
+
+                            <div class="verified-icon">
+                                <i class="bi bi-patch-check-fill"></i>
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Sertifikat Valid
+                                </h2>
+
+                                <p>
+                                    Sertifikat berhasil diverifikasi
+                                    dan terdaftar dalam sistem.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="valid-badge">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            VALID
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="certificate-body">
+
+                        <div class="row g-4">
+
+                            <!-- NAMA -->
+
+                            <div class="col-12">
+
+                                <div class="recipient-box">
+
+                                    <div class="detail-label">
+                                        Nama Pemegang Sertifikat
+                                    </div>
+
+                                    <div id="recipientName"
+                                         class="recipient-name">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- NOMOR SERTIFIKAT -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Nomor Sertifikat
+                                    </div>
+
+                                    <div id="certificateId"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PENERBIT -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Penerbit
+                                    </div>
+
+                                    <div id="issuer"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PROGRAM -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Program
+                                    </div>
+
+                                    <div id="certificateProgram"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- TANGGAL MULAI -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Tanggal Mulai
+                                    </div>
+
+                                    <div id="tanggalMulai"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- TANGGAL SELESAI -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Tanggal Selesai
+                                    </div>
+
+                                    <div id="tanggalSelesai"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- TANGGAL TERBIT -->
+
+                            <div class="col-md-6">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Tanggal Terbit
+                                    </div>
+
+                                    <div id="issueDate"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PEJABAT -->
+
+                            <div class="col-12">
+
+                                <div class="detail-item">
+
+                                    <div class="detail-label">
+                                        Pejabat
+                                    </div>
+
+                                    <div id="pejabat"
+                                         class="detail-value">
+                                        -
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SECURITY -->
+
+                        <div class="security-panel">
+
+                            <div class="security-icon">
+
+                                <i class="bi bi-shield-lock-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Sertifikat Terverifikasi
+                                </h3>
+
+                                <p>
+                                    Data sertifikat di atas diperoleh
+                                    langsung dari database resmi
+                                    penerbit berdasarkan kode
+                                    verifikasi yang terdapat pada
+                                    QR Code.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER INFO -->
+
+                <div class="verification-info">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    <span>
+                        Halaman ini menampilkan data sertifikat
+                        berdasarkan kode verifikasi unik.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- INVALID -->
+        <!-- ================================================= -->
+
+        <section id="invalidResult"
+                 class="result-section d-none">
+
+            <div class="container">
+
+                <div class="invalid-card">
+
+                    <div class="invalid-icon">
+
+                        <i class="bi bi-x-circle-fill"></i>
+
+                    </div>
+
+                    <h2>
+                        Sertifikat Tidak Ditemukan
+                    </h2>
+
+                    <p id="invalidDescription">
+                        Sertifikat yang Anda cari tidak ditemukan
+                        dalam sistem.
+                    </p>
+
+                    <div class="invalid-warning">
+
+                        <i class="bi bi-exclamation-triangle"></i>
+
+                        Pastikan QR Code atau kode verifikasi
+                        yang digunakan benar.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ERROR -->
+        <!-- ================================================= -->
+
+        <section id="errorResult"
+                 class="result-section d-none">
+
+            <div class="container">
+
+                <div class="error-card">
+
+                    <div class="error-icon">
+
+                        <i class="bi bi-wifi-off"></i>
+
+                    </div>
+
+                    <h2>
+                        Sistem Tidak Dapat Dihubungi
+                    </h2>
+
+                    <p id="errorMessage">
+                        Terjadi kesalahan saat menghubungi
+                        server verifikasi.
+                    </p>
+
+                    <button
+                        class="btn btn-success"
+                        onclick="location.reload()">
+
+                        <i class="bi bi-arrow-clockwise"></i>
+
+                        Coba Lagi
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+                    © <span id="currentYear"></span>
+                    PTTUN MEDAN
+                </div>
+
+                <div>
+                    Sistem Verifikasi Sertifikat
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- JS -->
+
+<script src="script.js"></script>
+
+</body>
+</html>
