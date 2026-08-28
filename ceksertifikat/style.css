@@ -2130,5 +2130,95 @@ body {
 
 }
 
+/* =====================================================
+   SEARCH CERTIFICATE
+===================================================== */
+
+.certificate-search {
+    max-width: 650px;
+    margin: 30px auto 0;
+}
+
+.certificate-search .input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.certificate-search .form-control {
+    height: 50px;
+    padding: 0 18px;
+
+    border: 1px solid var(--line);
+    border-radius: 10px !important;
+
+    background: #fff;
+    color: var(--ink);
+
+    font-family: "Work Sans", sans-serif;
+    font-size: 14px;
+}
+
+.certificate-search .form-control::placeholder {
+    color: #8a9a92;
+}
+
+.certificate-search .form-control:focus {
+    border-color: var(--forest);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 108, 234, .12);
+}
+
+.certificate-search .btn {
+    height: 50px;
+
+    padding: 0 25px;
+
+    border: none;
+    border-radius: 10px !important;
+
+    background: var(--forest);
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.certificate-search .btn:hover {
+    background: #0f5dcc;
+    color: #fff;
+}
+
+.certificate-search .btn i {
+    margin-right: 5px;
+}
+
+
+/* =====================================================
+   SEARCH MOBILE
+===================================================== */
+
+@media (max-width: 767px) {
+
+    .certificate-search {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .certificate-search .input-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .certificate-search .form-control,
+    .certificate-search .btn {
+        width: 100%;
+    }
+
+}
+
+
 
 
