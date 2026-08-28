@@ -1,7 +1,35 @@
 
 /**
  * =====================================================
- * KONFIGURASI GOOGLE APPS SCRIPT
+ * SISTEM CEK SERTIFIKAT
+ * =====================================================
+ *
+ * MODE:
+ *
+ * 1. PENCARIAN MANUAL
+ *    https://domain.com/
+ *
+ *    User memasukkan nomor:
+ *    003
+ *
+ *    FORM PENCARIAN TETAP TAMPIL
+ *    HASIL SERTIFIKAT TAMPIL
+ *
+ *
+ * 2. QR / BARCODE
+ *
+ *    https://domain.com/?id=X7K92AB81M4P
+ *
+ *    FORM PENCARIAN DISEMBUNYIKAN
+ *    HASIL SERTIFIKAT LANGSUNG TAMPIL
+ *
+ * =====================================================
+ */
+
+
+/**
+ * =====================================================
+ * URL GOOGLE APPS SCRIPT
  * =====================================================
  */
 
@@ -39,40 +67,75 @@ let pejabat;
 function initElements() {
 
     loadingBox =
-        document.getElementById("loadingBox");
+        document.getElementById(
+            "loadingBox"
+        );
+
 
     verifiedResult =
-        document.getElementById("verifiedResult");
+        document.getElementById(
+            "verifiedResult"
+        );
+
 
     invalidResult =
-        document.getElementById("invalidResult");
+        document.getElementById(
+            "invalidResult"
+        );
+
 
     errorResult =
-        document.getElementById("errorResult");
+        document.getElementById(
+            "errorResult"
+        );
+
 
     recipientName =
-        document.getElementById("recipientName");
+        document.getElementById(
+            "recipientName"
+        );
+
 
     certificateProgram =
-        document.getElementById("certificateProgram");
+        document.getElementById(
+            "certificateProgram"
+        );
+
 
     certificateId =
-        document.getElementById("certificateId");
+        document.getElementById(
+            "certificateId"
+        );
+
 
     issuer =
-        document.getElementById("issuer");
+        document.getElementById(
+            "issuer"
+        );
+
 
     tanggalMulai =
-        document.getElementById("tanggalMulai");
+        document.getElementById(
+            "tanggalMulai"
+        );
+
 
     tanggalSelesai =
-        document.getElementById("tanggalSelesai");
+        document.getElementById(
+            "tanggalSelesai"
+        );
+
 
     issueDate =
-        document.getElementById("issueDate");
+        document.getElementById(
+            "issueDate"
+        );
+
 
     pejabat =
-        document.getElementById("pejabat");
+        document.getElementById(
+            "pejabat"
+        );
 
 }
 
@@ -86,7 +149,10 @@ function initElements() {
 function initYear() {
 
     const currentYear =
-        document.getElementById("currentYear");
+        document.getElementById(
+            "currentYear"
+        );
+
 
     if (currentYear) {
 
@@ -100,7 +166,7 @@ function initYear() {
 
 /**
  * =====================================================
- * AMBIL NOMOR DARI URL
+ * AMBIL ID / TOKEN DARI URL
  * =====================================================
  */
 
@@ -111,14 +177,17 @@ function getTokenFromURL() {
             window.location.search
         );
 
+
     const token =
         params.get("id");
+
 
     if (!token) {
 
         return null;
 
     }
+
 
     return token
         .trim()
@@ -129,7 +198,7 @@ function getTokenFromURL() {
 
 /**
  * =====================================================
- * AMBIL NILAI AMAN
+ * SAFE VALUE
  * =====================================================
  */
 
@@ -145,6 +214,7 @@ function safeValue(value) {
 
     }
 
+
     return String(value);
 
 }
@@ -152,7 +222,7 @@ function safeValue(value) {
 
 /**
  * =====================================================
- * SEMBUNYIKAN SEMUA HASIL
+ * HIDE SEMUA HASIL
  * =====================================================
  */
 
@@ -160,25 +230,36 @@ function hideAllResults() {
 
     if (loadingBox) {
 
-        loadingBox.classList.add("d-none");
+        loadingBox.classList.add(
+            "d-none"
+        );
 
     }
+
 
     if (verifiedResult) {
 
-        verifiedResult.classList.add("d-none");
+        verifiedResult.classList.add(
+            "d-none"
+        );
 
     }
+
 
     if (invalidResult) {
 
-        invalidResult.classList.add("d-none");
+        invalidResult.classList.add(
+            "d-none"
+        );
 
     }
 
+
     if (errorResult) {
 
-        errorResult.classList.add("d-none");
+        errorResult.classList.add(
+            "d-none"
+        );
 
     }
 
@@ -187,7 +268,7 @@ function hideAllResults() {
 
 /**
  * =====================================================
- * LOADING
+ * TAMPILKAN LOADING
  * =====================================================
  */
 
@@ -195,9 +276,12 @@ function showLoading() {
 
     hideAllResults();
 
+
     if (loadingBox) {
 
-        loadingBox.classList.remove("d-none");
+        loadingBox.classList.remove(
+            "d-none"
+        );
 
     }
 
@@ -207,19 +291,42 @@ function showLoading() {
 /**
  * =====================================================
  * TAMPILKAN SERTIFIKAT
+ *
+ * fromSearch:
+ *
+ * true  = pencarian manual
+ * false = QR / barcode
  * =====================================================
  */
 
-function showCertificate(data) {
+function showCertificate(
+    data,
+    fromSearch = false
+) {
 
     hideAllResults();
 
+
+    /**
+     * ===================================================
+     * TAMPILKAN HASIL
+     * ===================================================
+     */
+
     if (verifiedResult) {
 
-        verifiedResult.classList.remove("d-none");
+        verifiedResult.classList.remove(
+            "d-none"
+        );
 
     }
 
+
+    /**
+     * ===================================================
+     * ISI DATA
+     * ===================================================
+     */
 
     if (recipientName) {
 
@@ -314,6 +421,85 @@ function showCertificate(data) {
     }
 
 
+    /**
+     * ===================================================
+     * FORM PENCARIAN
+     * ===================================================
+     *
+     * MANUAL:
+     * form tetap tampil
+     *
+     * QR:
+     * form disembunyikan
+     */
+
+    const searchForm =
+        document.getElementById(
+            "searchForm"
+        );
+
+
+    if (searchForm) {
+
+        if (fromSearch) {
+
+            searchForm.classList.remove(
+                "d-none"
+            );
+
+        } else {
+
+            searchForm.classList.add(
+                "d-none"
+            );
+
+        }
+
+    }
+
+
+    /**
+     * ===================================================
+     * TOMBOL KEMBALI
+     * ===================================================
+     *
+     * Jika ada tombol #backButton:
+     *
+     * MANUAL → tampil
+     * QR     → sembunyi
+     */
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+    if (backButton) {
+
+        if (fromSearch) {
+
+            backButton.classList.remove(
+                "d-none"
+            );
+
+        } else {
+
+            backButton.classList.add(
+                "d-none"
+            );
+
+        }
+
+    }
+
+
+    /**
+     * ===================================================
+     * SCROLL KE HASIL
+     * ===================================================
+     */
+
     setTimeout(function () {
 
         if (verifiedResult) {
@@ -340,9 +526,12 @@ function showInvalid(message) {
 
     hideAllResults();
 
+
     if (invalidResult) {
 
-        invalidResult.classList.remove("d-none");
+        invalidResult.classList.remove(
+            "d-none"
+        );
 
     }
 
@@ -388,9 +577,12 @@ function showError(message) {
 
     hideAllResults();
 
+
     if (errorResult) {
 
-        errorResult.classList.remove("d-none");
+        errorResult.classList.remove(
+            "d-none"
+        );
 
     }
 
@@ -428,7 +620,7 @@ function showError(message) {
 
 /**
  * =====================================================
- * CARI SERTIFIKAT
+ * CARI SERTIFIKAT DARI FORM
  * =====================================================
  */
 
@@ -451,19 +643,35 @@ function cariSertifikat() {
     }
 
 
-    const token =
+    const nomor =
         input.value
             .trim()
             .toUpperCase();
 
 
     console.log(
-        "Nomor sertifikat yang dicari:",
-        token
+        "================================="
     );
 
 
-    if (!token) {
+    console.log(
+        "PENCARIAN MANUAL"
+    );
+
+
+    console.log(
+        "Nomor:",
+        nomor
+    );
+
+
+    /**
+     * ===================================================
+     * CEK KOSONG
+     * ===================================================
+     */
+
+    if (!nomor) {
 
         input.classList.add(
             "is-invalid"
@@ -481,14 +689,18 @@ function cariSertifikat() {
     );
 
 
-    /*
-     * Masukkan nomor ke URL
+    /**
+     * ===================================================
+     * SIMPAN KE URL
+     * ===================================================
      */
 
     const newURL =
         window.location.pathname +
         "?id=" +
-        encodeURIComponent(token);
+        encodeURIComponent(
+            nomor
+        );
 
 
     window.history.replaceState(
@@ -498,18 +710,23 @@ function cariSertifikat() {
     );
 
 
-    /*
-     * Jalankan pencarian
+    /**
+     * ===================================================
+     * TRUE = MANUAL
+     * ===================================================
      */
 
-    verifyCertificate(token);
+    verifyCertificate(
+        nomor,
+        true
+    );
 
 }
 
 
 /**
  * =====================================================
- * ENTER
+ * ENTER DI INPUT
  * =====================================================
  */
 
@@ -536,7 +753,9 @@ function setupSearchInput() {
         "keydown",
         function (event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 event.preventDefault();
 
@@ -565,10 +784,18 @@ function setupSearchInput() {
 /**
  * =====================================================
  * VERIFIKASI SERTIFIKAT
+ *
+ * fromSearch:
+ *
+ * true  = form pencarian
+ * false = QR / barcode
  * =====================================================
  */
 
-async function verifyCertificate(token) {
+async function verifyCertificate(
+    token,
+    fromSearch = false
+) {
 
     if (!token) {
 
@@ -590,18 +817,30 @@ async function verifyCertificate(token) {
         "================================="
     );
 
+
     console.log(
         "VERIFIKASI SERTIFIKAT"
     );
 
+
     console.log(
-        "Nomor:",
+        "ID / TOKEN:",
         token
     );
 
 
-    /*
-     * Pastikan API tersedia
+    console.log(
+        "MODE:",
+        fromSearch
+            ? "PENCARIAN MANUAL"
+            : "QR / BARCODE"
+    );
+
+
+    /**
+     * ===================================================
+     * CEK API
+     * ===================================================
      */
 
     if (!API_URL) {
@@ -615,16 +854,18 @@ async function verifyCertificate(token) {
     }
 
 
-    /*
-     * =================================================
+    /**
+     * ===================================================
      * BUAT URL API
-     * =================================================
+     * ===================================================
      */
 
     const apiUrl =
         API_URL +
         "?id=" +
-        encodeURIComponent(token);
+        encodeURIComponent(
+            token
+        );
 
 
     console.log(
@@ -635,10 +876,10 @@ async function verifyCertificate(token) {
 
     try {
 
-        /*
-         * =================================================
+        /**
+         * ===============================================
          * FETCH
-         * =================================================
+         * ===============================================
          */
 
         const response =
@@ -653,7 +894,7 @@ async function verifyCertificate(token) {
 
 
         console.log(
-            "HTTP Status:",
+            "HTTP STATUS:",
             response.status
         );
 
@@ -668,10 +909,10 @@ async function verifyCertificate(token) {
         }
 
 
-        /*
-         * =================================================
+        /**
+         * ===============================================
          * BACA RESPONSE
-         * =================================================
+         * ===============================================
          */
 
         const text =
@@ -679,7 +920,7 @@ async function verifyCertificate(token) {
 
 
         console.log(
-            "Response mentah:",
+            "RESPONSE MENTAH:",
             text
         );
 
@@ -690,14 +931,17 @@ async function verifyCertificate(token) {
         try {
 
             data =
-                JSON.parse(text);
+                JSON.parse(
+                    text
+                );
 
         } catch (jsonError) {
 
             console.error(
-                "Response bukan JSON:",
-                text
+                "JSON ERROR:",
+                jsonError
             );
+
 
             throw new Error(
                 "Server tidak mengembalikan JSON."
@@ -707,41 +951,44 @@ async function verifyCertificate(token) {
 
 
         console.log(
-            "Data API:",
+            "DATA API:",
             data
         );
 
 
-        /*
-         * =================================================
+        /**
+         * ===============================================
          * CEK VALID
-         * =================================================
+         * ===============================================
          */
 
         const isValid =
             data.valid === true ||
-            data.valid === "true" ||
-            data.success === true ||
-            data.success === "true";
+            data.valid === "true";
 
 
         if (isValid) {
 
-            showCertificate(data);
+            showCertificate(
+                data,
+                fromSearch
+            );
+
 
             console.log(
                 "SERTIFIKAT DITEMUKAN"
             );
+
 
             return;
 
         }
 
 
-        /*
-         * =================================================
-         * JIKA DATA LANGSUNG DIKIRIM TANPA valid:true
-         * =================================================
+        /**
+         * ===============================================
+         * FORMAT DATA LANGSUNG
+         * ===============================================
          */
 
         if (
@@ -751,21 +998,26 @@ async function verifyCertificate(token) {
             data.nomorSertifikat
         ) {
 
-            showCertificate(data);
+            showCertificate(
+                data,
+                fromSearch
+            );
+
 
             console.log(
-                "SERTIFIKAT DITEMUKAN - FORMAT DATA LANGSUNG"
+                "SERTIFIKAT DITEMUKAN"
             );
+
 
             return;
 
         }
 
 
-        /*
-         * =================================================
+        /**
+         * ===============================================
          * TIDAK DITEMUKAN
-         * =================================================
+         * ===============================================
          */
 
         showInvalid(
@@ -775,21 +1027,18 @@ async function verifyCertificate(token) {
         );
 
 
-        console.log(
-            "SERTIFIKAT TIDAK DITEMUKAN"
-        );
-
-
     } catch (error) {
 
         console.error(
             "================================="
         );
 
+
         console.error(
-            "ERROR VERIFIKASI:",
+            "VERIFIKASI GAGAL:",
             error
         );
+
 
         console.error(
             "================================="
@@ -813,6 +1062,12 @@ async function verifyCertificate(token) {
 
 function kembaliKePencarian() {
 
+    /**
+     * ===================================================
+     * HAPUS PARAMETER URL
+     * ===================================================
+     */
+
     window.history.replaceState(
         {},
         document.title,
@@ -820,8 +1075,61 @@ function kembaliKePencarian() {
     );
 
 
+    /**
+     * ===================================================
+     * SEMBUNYIKAN HASIL
+     * ===================================================
+     */
+
     hideAllResults();
 
+
+    /**
+     * ===================================================
+     * TAMPILKAN FORM
+     * ===================================================
+     */
+
+    const searchForm =
+        document.getElementById(
+            "searchForm"
+        );
+
+
+    if (searchForm) {
+
+        searchForm.classList.remove(
+            "d-none"
+        );
+
+    }
+
+
+    /**
+     * ===================================================
+     * SEMBUNYIKAN TOMBOL KEMBALI
+     * ===================================================
+     */
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+    if (backButton) {
+
+        backButton.classList.add(
+            "d-none"
+        );
+
+    }
+
+
+    /**
+     * ===================================================
+     * KOSONGKAN INPUT
+     * =================================================== */
 
     const input =
         document.getElementById(
@@ -840,6 +1148,12 @@ function kembaliKePencarian() {
     }
 
 
+    /**
+     * ===================================================
+     * TAMPILKAN HERO
+     * ===================================================
+     */
+
     const heroSection =
         document.querySelector(
             ".hero-section"
@@ -855,11 +1169,23 @@ function kembaliKePencarian() {
     }
 
 
+    /**
+     * ===================================================
+     * KEMBALI KE ATAS
+     * ===================================================
+     */
+
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
+
+    /**
+     * ===================================================
+     * FOKUS INPUT
+     * ===================================================
+     */
 
     setTimeout(function () {
 
@@ -876,7 +1202,10 @@ function kembaliKePencarian() {
 
 /**
  * =====================================================
- * JALANKAN PENCARIAN DARI URL
+ * CEK URL
+ *
+ * Jika ada ?id=
+ * berarti kemungkinan QR / BARCODE
  * =====================================================
  */
 
@@ -889,16 +1218,116 @@ function checkURLToken() {
     if (token) {
 
         console.log(
-            "Token ditemukan dari URL:",
+            "================================="
+        );
+
+
+        console.log(
+            "QR / BARCODE TERDETEKSI"
+        );
+
+
+        console.log(
+            "TOKEN:",
             token
         );
 
 
-        verifyCertificate(token);
+        /**
+         * =================================================
+         * SEMBUNYIKAN FORM PENCARIAN
+         * =================================================
+         */
+
+        const searchForm =
+            document.getElementById(
+                "searchForm"
+            );
+
+
+        if (searchForm) {
+
+            searchForm.classList.add(
+                "d-none"
+            );
+
+        }
+
+
+        /**
+         * =================================================
+         * SEMBUNYIKAN TOMBOL KEMBALI
+         * =================================================
+         */
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+
+        if (backButton) {
+
+            backButton.classList.add(
+                "d-none"
+            );
+
+        }
+
+
+        /**
+         * =================================================
+         * VERIFIKASI
+         *
+         * FALSE = QR / BARCODE
+         * =================================================
+         */
+
+        verifyCertificate(
+            token,
+            false
+        );
+
 
     } else {
 
+        /**
+         * =================================================
+         * WEBSITE NORMAL
+         * =================================================
+         */
+
         hideAllResults();
+
+
+        const searchForm =
+            document.getElementById(
+                "searchForm"
+            );
+
+
+        if (searchForm) {
+
+            searchForm.classList.remove(
+                "d-none"
+            );
+
+        }
+
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+
+        if (backButton) {
+
+            backButton.classList.add(
+                "d-none"
+            );
+
+        }
 
     }
 
@@ -907,7 +1336,7 @@ function checkURLToken() {
 
 /**
  * =====================================================
- * INIT
+ * INITIALISASI
  * =====================================================
  */
 
@@ -916,7 +1345,17 @@ document.addEventListener(
     function () {
 
         console.log(
-            "Sistem cek sertifikat aktif."
+            "================================="
+        );
+
+
+        console.log(
+            "SISTEM CEK SERTIFIKAT AKTIF"
+        );
+
+
+        console.log(
+            "================================="
         );
 
 
@@ -930,3 +1369,5 @@ document.addEventListener(
 
     }
 );
+
+
