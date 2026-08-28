@@ -1,14 +1,8 @@
+
 /**
  * =====================================================
- * URL GOOGLE APPS SCRIPT
+ * KONFIGURASI GOOGLE APPS SCRIPT
  * =====================================================
- *
- * GANTI dengan URL Web App Anda.
- *
- * Contoh:
- *
- * https://script.google.com/macros/s/XXXXXXXX/exec
- *
  */
 
 const API_URL =
@@ -17,46 +11,70 @@ const API_URL =
 
 /**
  * =====================================================
+ * ELEMENT
+ * =====================================================
+ */
+
+let loadingBox;
+let verifiedResult;
+let invalidResult;
+let errorResult;
+
+let recipientName;
+let certificateProgram;
+let certificateId;
+let issuer;
+let tanggalMulai;
+let tanggalSelesai;
+let issueDate;
+let pejabat;
+
+
+/**
+ * =====================================================
  * AMBIL ELEMENT
  * =====================================================
  */
 
-const loadingBox =
-    document.getElementById("loadingBox");
+function initElements() {
 
-const verifiedResult =
-    document.getElementById("verifiedResult");
+    loadingBox =
+        document.getElementById("loadingBox");
 
-const invalidResult =
-    document.getElementById("invalidResult");
+    verifiedResult =
+        document.getElementById("verifiedResult");
 
-const errorResult =
-    document.getElementById("errorResult");
+    invalidResult =
+        document.getElementById("invalidResult");
 
+    errorResult =
+        document.getElementById("errorResult");
 
-const recipientName =
-    document.getElementById("recipientName");
+    recipientName =
+        document.getElementById("recipientName");
 
-const certificateProgram =
-    document.getElementById("certificateProgram");
+    certificateProgram =
+        document.getElementById("certificateProgram");
 
-const certificateId =
-    document.getElementById("certificateId");
+    certificateId =
+        document.getElementById("certificateId");
 
-const issuer =
-    document.getElementById("issuer");
+    issuer =
+        document.getElementById("issuer");
 
-const tanggalMulai =
-    document.getElementById("tanggalMulai");
+    tanggalMulai =
+        document.getElementById("tanggalMulai");
 
-const tanggalSelesai =
-    document.getElementById("tanggalSelesai");
+    tanggalSelesai =
+        document.getElementById("tanggalSelesai");
 
-const issueDate =
-    document.getElementById("issueDate");
+    issueDate =
+        document.getElementById("issueDate");
 
-const pejabat =
-    document.getElementById("pejabat");
+    pejabat =
+        document.getElementById("pejabat");
+
+}
 
 
 /**
@@ -65,21 +83,25 @@ const pejabat =
  * =====================================================
  */
 
-document.getElementById(
-    "currentYear"
-).textContent =
-    new Date().getFullYear();
+function initYear() {
+
+    const currentYear =
+        document.getElementById("currentYear");
+
+    if (currentYear) {
+
+        currentYear.textContent =
+            new Date().getFullYear();
+
+    }
+
+}
 
 
 /**
  * =====================================================
- * AMBIL TOKEN DARI URL
+ * AMBIL NOMOR DARI URL
  * =====================================================
- *
- * Contoh URL:
- *
- * https://ceksertifikat.pttunmedan.my.id/?id=X7K92AB81M4P
- *
  */
 
 function getTokenFromURL() {
@@ -89,17 +111,14 @@ function getTokenFromURL() {
             window.location.search
         );
 
-
     const token =
         params.get("id");
-
 
     if (!token) {
 
         return null;
 
     }
-
 
     return token
         .trim()
@@ -110,7 +129,7 @@ function getTokenFromURL() {
 
 /**
  * =====================================================
- * FORMAT DATA
+ * AMBIL NILAI AMAN
  * =====================================================
  */
 
@@ -119,97 +138,213 @@ function safeValue(value) {
     if (
         value === null ||
         value === undefined ||
-        value === ""
+        String(value).trim() === ""
     ) {
 
         return "-";
 
     }
 
-
-    return value;
+    return String(value);
 
 }
 
 
 /**
  * =====================================================
- * TAMPILKAN DATA SERTIFIKAT
+ * SEMBUNYIKAN SEMUA HASIL
+ * =====================================================
+ */
+
+function hideAllResults() {
+
+    if (loadingBox) {
+
+        loadingBox.classList.add("d-none");
+
+    }
+
+    if (verifiedResult) {
+
+        verifiedResult.classList.add("d-none");
+
+    }
+
+    if (invalidResult) {
+
+        invalidResult.classList.add("d-none");
+
+    }
+
+    if (errorResult) {
+
+        errorResult.classList.add("d-none");
+
+    }
+
+}
+
+
+/**
+ * =====================================================
+ * LOADING
+ * =====================================================
+ */
+
+function showLoading() {
+
+    hideAllResults();
+
+    if (loadingBox) {
+
+        loadingBox.classList.remove("d-none");
+
+    }
+
+}
+
+
+/**
+ * =====================================================
+ * TAMPILKAN SERTIFIKAT
  * =====================================================
  */
 
 function showCertificate(data) {
 
-    // Sembunyikan loading
-    loadingBox.classList.add("d-none");
+    hideAllResults();
 
-    // Sembunyikan error
-    errorResult.classList.add("d-none");
+    if (verifiedResult) {
 
-    // Sembunyikan invalid
-    invalidResult.classList.add("d-none");
+        verifiedResult.classList.remove("d-none");
 
-    // Tampilkan sertifikat
-    verifiedResult.classList.remove("d-none");
+    }
 
 
-    // Nama
-    recipientName.textContent =
-        safeValue(data.nama);
+    if (recipientName) {
+
+        recipientName.textContent =
+            safeValue(
+                data.nama ||
+                data.name ||
+                data.Nama
+            );
+
+    }
 
 
-    // ID
-    certificateId.textContent =
-        safeValue(data.id);
+    if (certificateId) {
+
+        certificateId.textContent =
+            safeValue(
+                data.id ||
+                data.nomor ||
+                data.nomorSertifikat ||
+                data.certificateId
+            );
+
+    }
 
 
-    // Penerbit
-    issuer.textContent =
-        safeValue(data.penerbit);
+    if (certificateProgram) {
+
+        certificateProgram.textContent =
+            safeValue(
+                data.program ||
+                data.kegiatan ||
+                data.judul
+            );
+
+    }
 
 
-    // Program
-    certificateProgram.textContent =
-        safeValue(data.program);
+    if (issuer) {
+
+        issuer.textContent =
+            safeValue(
+                data.penerbit ||
+                data.issuer
+            );
+
+    }
 
 
-    // Tanggal mulai
-    tanggalMulai.textContent =
-        safeValue(data.tanggalMulai);
+    if (tanggalMulai) {
+
+        tanggalMulai.textContent =
+            safeValue(
+                data.tanggalMulai ||
+                data.mulai
+            );
+
+    }
 
 
-    // Tanggal selesai
-    tanggalSelesai.textContent =
-        safeValue(data.tanggalSelesai);
+    if (tanggalSelesai) {
+
+        tanggalSelesai.textContent =
+            safeValue(
+                data.tanggalSelesai ||
+                data.selesai
+            );
+
+    }
 
 
-    // Tanggal terbit
-    issueDate.textContent =
-        safeValue(data.tanggal);
+    if (issueDate) {
+
+        issueDate.textContent =
+            safeValue(
+                data.tanggal ||
+                data.tanggalTerbit ||
+                data.issueDate
+            );
+
+    }
 
 
-    // Pejabat
-    pejabat.textContent =
-        safeValue(data.pejabat);
+    if (pejabat) {
+
+        pejabat.textContent =
+            safeValue(
+                data.pejabat ||
+                data.penandatangan
+            );
+
+    }
+
+
+    setTimeout(function () {
+
+        if (verifiedResult) {
+
+            verifiedResult.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 100);
 
 }
 
 
 /**
  * =====================================================
- * TAMPILKAN INVALID
+ * TAMPILKAN TIDAK DITEMUKAN
  * =====================================================
  */
 
 function showInvalid(message) {
 
-    loadingBox.classList.add("d-none");
+    hideAllResults();
 
-    verifiedResult.classList.add("d-none");
+    if (invalidResult) {
 
-    errorResult.classList.add("d-none");
+        invalidResult.classList.remove("d-none");
 
-    invalidResult.classList.remove("d-none");
+    }
 
 
     const description =
@@ -218,9 +353,27 @@ function showInvalid(message) {
         );
 
 
-    description.textContent =
-        message ||
-        "Sertifikat tidak ditemukan dalam sistem.";
+    if (description) {
+
+        description.textContent =
+            message ||
+            "Sertifikat tidak ditemukan.";
+
+    }
+
+
+    setTimeout(function () {
+
+        if (invalidResult) {
+
+            invalidResult.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 100);
 
 }
 
@@ -233,13 +386,13 @@ function showInvalid(message) {
 
 function showError(message) {
 
-    loadingBox.classList.add("d-none");
+    hideAllResults();
 
-    verifiedResult.classList.add("d-none");
+    if (errorResult) {
 
-    invalidResult.classList.add("d-none");
+        errorResult.classList.remove("d-none");
 
-    errorResult.classList.remove("d-none");
+    }
 
 
     const errorMessage =
@@ -248,9 +401,163 @@ function showError(message) {
         );
 
 
-    errorMessage.textContent =
-        message ||
-        "Terjadi kesalahan saat menghubungi server.";
+    if (errorMessage) {
+
+        errorMessage.textContent =
+            message ||
+            "Terjadi kesalahan saat menghubungi server.";
+
+    }
+
+
+    setTimeout(function () {
+
+        if (errorResult) {
+
+            errorResult.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 100);
+
+}
+
+
+/**
+ * =====================================================
+ * CARI SERTIFIKAT
+ * =====================================================
+ */
+
+function cariSertifikat() {
+
+    const input =
+        document.getElementById(
+            "searchCertificate"
+        );
+
+
+    if (!input) {
+
+        console.error(
+            "ERROR: #searchCertificate tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    const token =
+        input.value
+            .trim()
+            .toUpperCase();
+
+
+    console.log(
+        "Nomor sertifikat yang dicari:",
+        token
+    );
+
+
+    if (!token) {
+
+        input.classList.add(
+            "is-invalid"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    input.classList.remove(
+        "is-invalid"
+    );
+
+
+    /*
+     * Masukkan nomor ke URL
+     */
+
+    const newURL =
+        window.location.pathname +
+        "?id=" +
+        encodeURIComponent(token);
+
+
+    window.history.replaceState(
+        {},
+        document.title,
+        newURL
+    );
+
+
+    /*
+     * Jalankan pencarian
+     */
+
+    verifyCertificate(token);
+
+}
+
+
+/**
+ * =====================================================
+ * ENTER
+ * =====================================================
+ */
+
+function setupSearchInput() {
+
+    const input =
+        document.getElementById(
+            "searchCertificate"
+        );
+
+
+    if (!input) {
+
+        console.warn(
+            "Input #searchCertificate tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    input.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                cariSertifikat();
+
+            }
+
+        }
+    );
+
+
+    input.addEventListener(
+        "input",
+        function () {
+
+            input.classList.remove(
+                "is-invalid"
+            );
+
+        }
+    );
 
 }
 
@@ -261,86 +568,95 @@ function showError(message) {
  * =====================================================
  */
 
-async function verifyCertificate() {
-
-    // -----------------------------------------------
-    // Ambil TOKEN
-    // -----------------------------------------------
-
-    const token =
-        getTokenFromURL();
-
-
-    // -----------------------------------------------
-    // Tidak ada token
-    // -----------------------------------------------
+async function verifyCertificate(token) {
 
     if (!token) {
 
-        showInvalid(
-            "Kode verifikasi tidak ditemukan pada URL."
-        );
-
         return;
 
     }
 
 
-    // -----------------------------------------------
-    // Cek URL API
-    // -----------------------------------------------
+    token =
+        String(token)
+            .trim()
+            .toUpperCase();
 
-    if (
-        !API_URL ||
-        API_URL.includes(
-            "MASUKKAN_URL"
-        )
-    ) {
+
+    showLoading();
+
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "VERIFIKASI SERTIFIKAT"
+    );
+
+    console.log(
+        "Nomor:",
+        token
+    );
+
+
+    /*
+     * Pastikan API tersedia
+     */
+
+    if (!API_URL) {
 
         showError(
-            "URL Google Apps Script belum dikonfigurasi."
+            "URL Google Apps Script belum tersedia."
         );
 
         return;
 
     }
+
+
+    /*
+     * =================================================
+     * BUAT URL API
+     * =================================================
+     */
+
+    const apiUrl =
+        API_URL +
+        "?id=" +
+        encodeURIComponent(token);
+
+
+    console.log(
+        "API URL:",
+        apiUrl
+    );
 
 
     try {
 
-        // -------------------------------------------
-        // Buat URL API
-        // -------------------------------------------
-
-        const apiUrl =
-            API_URL +
-            "?id=" +
-            encodeURIComponent(token);
-
-
-        console.log(
-            "Memverifikasi token:",
-            token
-        );
-
-
-        // -------------------------------------------
-        // Panggil Google Apps Script
-        // -------------------------------------------
+        /*
+         * =================================================
+         * FETCH
+         * =================================================
+         */
 
         const response =
             await fetch(
                 apiUrl,
                 {
                     method: "GET",
-                    cache: "no-store"
+                    cache: "no-store",
+                    redirect: "follow"
                 }
             );
 
 
-        // -------------------------------------------
-        // HTTP ERROR
-        // -------------------------------------------
+        console.log(
+            "HTTP Status:",
+            response.status
+        );
+
 
         if (!response.ok) {
 
@@ -352,56 +668,136 @@ async function verifyCertificate() {
         }
 
 
-        // -------------------------------------------
-        // Baca JSON
-        // -------------------------------------------
+        /*
+         * =================================================
+         * BACA RESPONSE
+         * =================================================
+         */
 
-        const data =
-            await response.json();
+        const text =
+            await response.text();
 
 
         console.log(
-            "Data sertifikat:",
-            data
+            "Response mentah:",
+            text
         );
 
 
-        // -------------------------------------------
-        // VALID
-        // -------------------------------------------
-
-        if (
-            data.valid === true
-        ) {
-
-            showCertificate(data);
-
-        }
+        let data;
 
 
-        // -------------------------------------------
-        // INVALID
-        // -------------------------------------------
+        try {
 
-        else {
+            data =
+                JSON.parse(text);
 
-            showInvalid(
-                data.message
+        } catch (jsonError) {
+
+            console.error(
+                "Response bukan JSON:",
+                text
+            );
+
+            throw new Error(
+                "Server tidak mengembalikan JSON."
             );
 
         }
 
 
+        console.log(
+            "Data API:",
+            data
+        );
+
+
+        /*
+         * =================================================
+         * CEK VALID
+         * =================================================
+         */
+
+        const isValid =
+            data.valid === true ||
+            data.valid === "true" ||
+            data.success === true ||
+            data.success === "true";
+
+
+        if (isValid) {
+
+            showCertificate(data);
+
+            console.log(
+                "SERTIFIKAT DITEMUKAN"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * =================================================
+         * JIKA DATA LANGSUNG DIKIRIM TANPA valid:true
+         * =================================================
+         */
+
+        if (
+            data.nama ||
+            data.Nama ||
+            data.nomor ||
+            data.nomorSertifikat
+        ) {
+
+            showCertificate(data);
+
+            console.log(
+                "SERTIFIKAT DITEMUKAN - FORMAT DATA LANGSUNG"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * =================================================
+         * TIDAK DITEMUKAN
+         * =================================================
+         */
+
+        showInvalid(
+            data.message ||
+            data.error ||
+            "Sertifikat tidak ditemukan."
+        );
+
+
+        console.log(
+            "SERTIFIKAT TIDAK DITEMUKAN"
+        );
+
+
     } catch (error) {
 
         console.error(
-            "Verifikasi gagal:",
+            "================================="
+        );
+
+        console.error(
+            "ERROR VERIFIKASI:",
             error
+        );
+
+        console.error(
+            "================================="
         );
 
 
         showError(
-            "Sistem verifikasi tidak dapat dihubungi. Silakan coba beberapa saat lagi."
+            "Sistem verifikasi tidak dapat dihubungi. Silakan coba lagi."
         );
 
     }
@@ -411,7 +807,107 @@ async function verifyCertificate() {
 
 /**
  * =====================================================
- * JALANKAN OTOMATIS
+ * KEMBALI KE PENCARIAN
+ * =====================================================
+ */
+
+function kembaliKePencarian() {
+
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+
+
+    hideAllResults();
+
+
+    const input =
+        document.getElementById(
+            "searchCertificate"
+        );
+
+
+    if (input) {
+
+        input.value = "";
+
+        input.classList.remove(
+            "is-invalid"
+        );
+
+    }
+
+
+    const heroSection =
+        document.querySelector(
+            ".hero-section"
+        );
+
+
+    if (heroSection) {
+
+        heroSection.classList.remove(
+            "d-none"
+        );
+
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+
+    setTimeout(function () {
+
+        if (input) {
+
+            input.focus();
+
+        }
+
+    }, 500);
+
+}
+
+
+/**
+ * =====================================================
+ * JALANKAN PENCARIAN DARI URL
+ * =====================================================
+ */
+
+function checkURLToken() {
+
+    const token =
+        getTokenFromURL();
+
+
+    if (token) {
+
+        console.log(
+            "Token ditemukan dari URL:",
+            token
+        );
+
+
+        verifyCertificate(token);
+
+    } else {
+
+        hideAllResults();
+
+    }
+
+}
+
+
+/**
+ * =====================================================
+ * INIT
  * =====================================================
  */
 
@@ -419,7 +915,18 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        verifyCertificate();
+        console.log(
+            "Sistem cek sertifikat aktif."
+        );
+
+
+        initElements();
+
+        initYear();
+
+        setupSearchInput();
+
+        checkURLToken();
 
     }
 );
