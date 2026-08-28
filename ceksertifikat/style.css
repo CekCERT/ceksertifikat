@@ -2,7 +2,7 @@
 
     --ink: #10261f;
 
-    --forest: #0e29d;
+    --primary: #0e29d;
 
     --moss: #2d7658;
 
@@ -110,7 +110,7 @@ body {
     color: #f8e7b8;
 
     background:
-        var(--forest);
+        var(--primary);
 
     font-size: 21px;
 
