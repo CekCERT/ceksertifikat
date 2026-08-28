@@ -1,7 +1,7 @@
 
 /**
  * =====================================================
- * SISTEM CEK SERTIFIKAT
+ * SISTEM CEK SERTIFIKAT PTTUN MEDAN
  * =====================================================
  *
  * MODE:
@@ -1369,5 +1369,6 @@ document.addEventListener(
 
     }
 );
+
 
 
